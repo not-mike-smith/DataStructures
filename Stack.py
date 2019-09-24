@@ -6,10 +6,11 @@ class Stack(object):
             self._list = list(iterable)
         self._type_restriction = type_restriction
         # reduce nesting here!
-        if self._type_restriction is not None:
-            for item in self._list:
-                if type(item) is not self._type_restriction:
-                    raise TypeError('Iterable elements are not of type {}'.format(self._type_restriction))
+        if self._type_restriction is None or len(self._list) == 0:
+            return
+        for item in self._list:
+            if type(item) is not self._type_restriction:
+                raise TypeError('Iterable elements are not of type {}'.format(self._type_restriction))
 
     def push(self, value):
         if self._type_restriction is not None and type(value) is not self._type_restriction:
