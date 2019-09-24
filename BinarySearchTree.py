@@ -50,9 +50,7 @@ class BinarySearchTree(object):
             previous.assign_right(node)
 
     def remove(self, key):
-        node = self._find(key)
-        if node is None:
-            raise KeyError('Cannot find key, {}'.format(key))
+        node = self._findOrRaiseError(key)
         self._remove(node)
 
     def remove_all(self, key):
@@ -131,27 +129,31 @@ class BinarySearchTree(object):
                 node = node.right
         return node
 
-    def successor(self, key):
+    def _findOrRaiseError(self, key):
         node = self._find(key)
         if node is None:
-            raise KeyError('key, {}, is not present in tree'.format(key))
-        node = node.successor()
-        while self.allow_duplicates and node is not None and node.key == key:
-            node = node.successor()
+            raise KeyError('Cannot find key, {}'.format(key))
+        return node
+
+    @staticmethod
+    def _getKeyOrNone(node):
         if node is None:
             return None
         return node.key
 
+    def successor(self, key):
+        node = self._findOrRaiseError(key)
+        node = node.successor()
+        while self.allow_duplicates and node is not None and node.key == key:
+            node = node.successor()
+        return self._getKeyOrNone(node)
+
     def predecessor(self, key):
-        node = self._find(key)
-        if node is None:
-            raise KeyError('key, {}, is not present in tree'.format(key))
+        node = self._findOrRaiseError(key)
         node = node.predecessor()
         while self.allow_duplicates and node is not None and node.key == key:
             node = node.predecessor()
-        if node is None:
-            return None
-        return node.key
+        return self._getKeyOrNone(node)
 
     def list(self, first_key, last_key):
         list_builder = _ListBuilder(first_key, last_key)
