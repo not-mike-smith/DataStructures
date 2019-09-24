@@ -34,17 +34,23 @@ class AvlNode(BstNode):
     def is_balanced(self):
         return abs(self.get_height(self.left) - self.get_height(self.right)) < 2
 
+    def rebalance_left(self):
+        if AvlNode.get_height(self.left.left) < AvlNode.get_height(self.left.right):
+            self.left.rotate_left()
+            self.left.left.update_height()
+        self.rotate_right()
+
+    def rebalance_right(self):
+        if AvlNode.get_height(self.right.right) < AvlNode.get_height(self.right.left):
+            self.right.rotate_right()
+            self.right.right.update_height()
+        self.rotate_left()
+
     def rebalance(self):
         if self.get_height(self.left) > self.get_height(self.right):
-            if AvlNode.get_height(self.left.left) < AvlNode.get_height(self.left.right):
-                self.left.rotate_left()
-                self.left.left.update_height()
-            self.rotate_right()
+            self.rebalance_left()
         else:
-            if AvlNode.get_height(self.right.right) < AvlNode.get_height(self.right.left):
-                self.right.rotate_right()
-                self.right.right.update_height()
-            self.rotate_left()
+            self.rebalance_right()
         self.update_height_and_rebalance()  # will force parent to update
         if self.parent.parent is not None:
             self.parent.parent.update_height_and_rebalance()
