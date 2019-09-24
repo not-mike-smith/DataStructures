@@ -1,16 +1,19 @@
+def listOfIterable(iterable):
+    if iterable is None:
+        return []
+    return list(iterable)
+
+def raiseErrorIfTypeMismatch(type_restriction, item):
+    if (type_restriction is None):
+        return
+    if type(item) is not type_restriction:
+        raise TypeError('Iterable elements are not of type {}'.format(type_restriction))
+
 class Stack(object):
     def __init__(self, iterable=None, type_restriction=None):
-        if iterable is None:
-            self._list = []
-        else:
-            self._list = list(iterable)
+        self._list = listOfIterable(iterable)
         self._type_restriction = type_restriction
-        # reduce nesting here!
-        if self._type_restriction is None or len(self._list) == 0:
-            return
-        for item in self._list:
-            if type(item) is not self._type_restriction:
-                raise TypeError('Iterable elements are not of type {}'.format(self._type_restriction))
+        map(lambda i: raiseErrorIfTypeMismatch(self._type_restriction, i), self._list)
 
     def push(self, value):
         if self._type_restriction is not None and type(value) is not self._type_restriction:
