@@ -5,6 +5,7 @@ class Stack(object):
         else:
             self._list = list(iterable)
         self._type_restriction = type_restriction
+        # reduce nesting here!
         if self._type_restriction is not None:
             for item in self._list:
                 if type(item) is not self._type_restriction:
