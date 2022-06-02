@@ -12,3 +12,5 @@ low = 1.4
 high = 6.7
 print("length of tree.list is {0}, tree.count returns {1}".format(len(tree.list(low, high)), tree.count(low, high)))
 dummy = 1
+
+print("hello, world!")
